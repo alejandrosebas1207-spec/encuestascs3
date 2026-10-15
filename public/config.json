@@ -17,7 +17,8 @@
     ]
   ],
   "kobo": {
-    "asset_id": "ag7L7pRAqLCwckTTgAYiTT",
+    "asset_id": "",
+    "api_token": "07cf361cc0dcfc56f489d599435c8e0ed6ce9387",
     "campo_encuestador": "codencu",
     "campo_supervisor": "codsup",
     "choices_parroquias": {
