@@ -1,11 +1,11 @@
 {
-  "estado": "ACTIVO",
+  "estado": "STANDBY",
   "version": "1.0.0",
-  "proyecto": "Movilidad Movidelnor - Imbabura 2026",
-  "canton": "Todos",
+  "proyecto": "Terminal de Supervisión en Espera",
+  "canton": "",
   "provincia": "Imbabura",
   "modalidad": "sectores",
-  "meta": 1900,
+  "meta": 0,
   "bounds": [
     [
       -78.85,
