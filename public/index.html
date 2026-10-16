@@ -25,14 +25,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 
   <!-- Preload Cartografía Clave (Caché optimizada para móviles) -->
-  <link rel="preload" href="assets/parroquias.geojson?v=111.0.5" as="fetch" crossorigin>
-  <link rel="preload" href="assets/sectores_censales.geojson?v=111.0.5" as="fetch" crossorigin>
+  <link rel="preload" href="assets/parroquias.geojson?v=111.0.6" as="fetch" crossorigin>
+  <link rel="preload" href="assets/sectores_censales.geojson?v=111.0.6" as="fetch" crossorigin>
 
   <!-- MapLibre GL CSS (Aceleración WebGL Nativa en GPU) -->
   <link rel="stylesheet" href="libs/maplibre-gl.css" />
 
   <!-- Estilos del Dashboard -->
-  <link rel="stylesheet" href="style.css?v=111.0.5">
+  <link rel="stylesheet" href="style.css?v=111.0.6">
 </head>
 <body>
 
@@ -520,7 +520,7 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script src="libs/maplibre-gl.js"></script>
-  <script src="script.js?v=111.0.5"></script>
+  <script src="script.js?v=111.0.6"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -536,13 +536,13 @@
         if ('caches' in window) {
           caches.keys().then(names => {
             names.forEach(name => {
-              if (name !== 'clima-social-v111-1-quito') {
+              if (name !== 'clima-social-v111-2-quito') {
                 caches.delete(name);
               }
             });
           });
         }
-        navigator.serviceWorker.register('/service-worker.js?v=111.0.5').then(reg => {
+        navigator.serviceWorker.register('/service-worker.js?v=111.0.6').then(reg => {
           if (!reg) return;
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
