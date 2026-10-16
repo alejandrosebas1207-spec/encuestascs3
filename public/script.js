@@ -2437,6 +2437,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.sc_key = p.sc_key || (can && cod ? `${can}_${cod}` : '');
                 p.etiqueta = etiq;
                 p.etiquetaSC = etiq;
+                const circVal = normCircunscripcion(p.circunscripcion || p.CIRCUNSCRIPCION || '');
+                p.circunscripcion = circVal;
+                p.CIRCUNSCRIPCION = circVal;
 
                 let bbox = null;
                 let centroid = null;
@@ -2537,6 +2540,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cod = p.CODPAR || p.cod || p.codigo || '';
                 const b = f.geometry ? calcularBBOX(f.geometry) : null;
                 f.properties.bbox = b;
+                const circParr = normCircunscripcion(p.circunscripcion || p.CIRCUNSCRIPCION || '');
+                p.circunscripcion = circParr;
+                p.CIRCUNSCRIPCION = circParr;
                 if (nombre) AppState.parroquiasMap.set(nombre, { feature: f, bbox: b, props: p });
 
                 if (canton) {
