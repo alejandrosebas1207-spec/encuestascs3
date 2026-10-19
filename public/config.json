@@ -1,7 +1,7 @@
 {
-  "estado": "ACTIVO",
-  "version": "111.0.9",
-  "proyecto": "Encuesta Cantonal Quito Octubre 2026",
+  "estado": "STANDBY",
+  "version": "111.0.10",
+  "proyecto": "Terminal de Supervisión en Espera",
   "canton": "Quito",
   "provincia": "Pichincha",
   "modalidad": "sectores",

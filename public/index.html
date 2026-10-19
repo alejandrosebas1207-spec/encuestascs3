@@ -37,7 +37,7 @@
 <body>
 
     <!-- ===== STANDBY OVERLAY (ESTADO EN ESPERA / REPOSO) ===== -->
-  <div class="cs-standby" id="standbyOverlay" style="display:none;">
+  <div class="cs-standby" id="standbyOverlay" style="display:flex;">
     <div class="cs-standby__card">
       <div class="cs-standby__logo-wrap" id="standbyLogoBtn" role="button" tabindex="0" title="Clima Social · Toca 3 veces para inspeccionar cartografía">
         <img src="assets/01_ClimaSocial_Horizontal_Transparente.png" onerror="this.onerror=null; this.src='assets/01_Logo_Clima_Social_Horizontal_Oficial.svg';" alt="Clima Social" class="cs-standby__logo">
@@ -520,7 +520,7 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script src="libs/maplibre-gl.js"></script>
-  <script src="script.js?v=111.0.9"></script>
+  <script src="script.js?v=111.0.10"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -536,13 +536,13 @@
         if ('caches' in window) {
           caches.keys().then(names => {
             names.forEach(name => {
-              if (name !== 'clima-social-v111-9-quito') {
+              if (name !== 'clima-social-v111-10-standby') {
                 caches.delete(name);
               }
             });
           });
         }
-        navigator.serviceWorker.register('/service-worker.js?v=111.0.9').then(reg => {
+        navigator.serviceWorker.register('/service-worker.js?v=111.0.10').then(reg => {
           if (!reg) return;
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
