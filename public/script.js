@@ -542,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let map = null;
     let popupSectorActivo = null;
+    let popupEncuestaActivo = null;
 
     function abrirPopupPuntoMuestra(sectorMeta, coordsExplicit) {
         if (!sectorMeta) return;
@@ -592,6 +593,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (popupSectorActivo) {
             popupSectorActivo.remove();
             popupSectorActivo = null;
+        }
+        if (popupEncuestaActivo) {
+            popupEncuestaActivo.remove();
+            popupEncuestaActivo = null;
         }
         if (map && lat && lng) {
             popupSectorActivo = new maplibregl.Popup({ offset: [0, -12], closeButton: true, maxWidth: '320px' })
@@ -3170,6 +3175,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // =====================================================================
         const abrirPopupEncuesta = (e) => {
             if (!e.features || !e.features.length) return;
+            if (e.originalEvent) e.originalEvent._encuestaHandled = true;
+
+            if (popupSectorActivo) {
+                popupSectorActivo.remove();
+                popupSectorActivo = null;
+            }
+            if (popupEncuestaActivo) {
+                popupEncuestaActivo.remove();
+                popupEncuestaActivo = null;
+            }
+
             const p = e.features[0].properties;
             const coords = e.features[0].geometry.coordinates;
             const esAtipica = p.esAtipica === true || p.esAtipica === 'true';
@@ -3199,7 +3215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            new maplibregl.Popup({ offset: [0, -10], closeButton: true })
+            popupEncuestaActivo = new maplibregl.Popup({ offset: [0, -10], closeButton: true })
                 .setLngLat(coords)
                 .setHTML(`
                     <div style="font-family:'Inter',sans-serif;min-width:210px;padding:2px;">
@@ -3231,6 +3247,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Clic en Sector Censal
         const abrirPopupSector = (e) => {
+            if (e.originalEvent && e.originalEvent._encuestaHandled) return;
+            if (e.point && map.getLayer('puntos-layer')) {
+                const puntosDebajo = map.queryRenderedFeatures(e.point, { layers: ['puntos-layer'] });
+                if (puntosDebajo && puntosDebajo.length > 0) return;
+            }
             if (!e.features || !e.features.length) return;
             const p = e.features[0].properties || {};
             const geom = e.features[0].geometry;
