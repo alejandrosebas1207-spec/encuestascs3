@@ -116,17 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const numOnly = parseInt(raw, 10);
         const sid = !isNaN(numOnly) ? String(numOnly) : raw;
         const miembro = EQUIPO_CAMPO[sid] || EQUIPO_CAMPO[raw];
-        if (miembro) {
-            if (formato === 'completo') return `Enc. ${sid} · ${miembro.nombre}`;
+        if (miembro && miembro.nombre) {
+            if (formato === 'completo') return `Encuestador ${sid} · ${miembro.nombre}`;
             if (formato === 'nombre') return miembro.nombre;
-            if (formato === 'primerNombre') return miembro.primerNombre;
-            if (formato === 'busqueda') return `Enc. ${sid} ${miembro.primerNombre} ${miembro.nombre}`;
-            return `Enc. ${sid} · ${miembro.primerNombre}`;
+            if (formato === 'primerNombre') return miembro.primerNombre || miembro.nombre;
+            if (formato === 'busqueda') return `Encuestador ${sid} ${miembro.nombre}`;
+            return `Encuestador ${sid} · ${miembro.primerNombre || miembro.nombre}`;
         }
         if (!isNaN(numOnly)) {
-            return `Enc. ${sid}`;
+            return `Encuestador ${sid}`;
         }
-        return `Enc. ${raw}`;
+        return `Encuestador ${raw}`;
     }
 
     function obtenerEtiquetaSupervisor(id, formato = 'corto') {
@@ -135,18 +135,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const numOnly = parseInt(raw, 10);
         const sid = !isNaN(numOnly) ? String(numOnly) : raw;
         const miembro = SUPERVISORES_CAMPO[sid] || SUPERVISORES_CAMPO[raw];
-        if (miembro) {
-            if (formato === 'completo') return `Sup. ${sid} · ${miembro.nombre}`;
-            if (formato === 'micro') return `Sup. ${sid}`;
+        if (miembro && miembro.nombre) {
+            if (formato === 'completo') return `Supervisor ${sid} · ${miembro.nombre}`;
+            if (formato === 'micro') return `Supervisor ${sid}`;
             if (formato === 'nombre') return miembro.nombre;
-            if (formato === 'primerNombre') return miembro.primerNombre;
-            if (formato === 'busqueda') return `Sup. ${sid} ${miembro.primerNombre} ${miembro.nombre}`;
-            return `Sup. ${sid} · ${miembro.primerNombre}`;
+            if (formato === 'primerNombre') return miembro.primerNombre || miembro.nombre;
+            if (formato === 'busqueda') return `Supervisor ${sid} ${miembro.nombre}`;
+            return `Supervisor ${sid} · ${miembro.primerNombre || miembro.nombre}`;
         }
         if (!isNaN(numOnly)) {
-            return `Sup. ${sid}`;
+            return `Supervisor ${sid}`;
         }
-        return `Sup. ${raw}`;
+        return `Supervisor ${raw}`;
     }
 
     // Paleta cromática distintiva de alto contraste para Encuestadores (excluye Teal #0d9488 de Muestreo)
@@ -329,15 +329,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // PALETA CROMÁTICA OFICIAL POR CIRCUNSCRIPCIÓN (DIRECTRIZ CANTONAL CLIMA SOCIAL)
     // =========================================================================
     const PALETA_CIRCUNSCRIPCIONES = {
-        'CIRCUNSCRIPCION URBANA 1': { nombre: 'Urbana 1 (Norte)', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)',  },
-        'CIRCUNSCRIPCION URBANA 2': { nombre: 'Urbana 2 (Centro)', hex: '#7c3aed', fill: 'rgba(124, 58, 237, 0.26)',  },
-        'CIRCUNSCRIPCION URBANA 3': { nombre: 'Urbana 3 (Sur)', hex: '#ea580c', fill: 'rgba(234, 88, 12, 0.26)',  },
-        'CIRCUNSCRIPCION URBANA': { nombre: 'Urbana', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)',  },
-        'CIRCUNSCRIPCION RURAL': { nombre: 'Rural', hex: '#059669', fill: 'rgba(5, 150, 105, 0.26)',  }
+        'CIRCUNSCRIPCION URBANA 1': { nombre: 'Urbana 1 (Norte)', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'CIRCUNSCRIPCIÓN URBANA 1': { nombre: 'Urbana 1 (Norte)', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'CIRCUNSCRIPCION URBANA 2': { nombre: 'Urbana 2 (Centro)', hex: '#7c3aed', fill: 'rgba(124, 58, 237, 0.26)' },
+        'CIRCUNSCRIPCIÓN URBANA 2': { nombre: 'Urbana 2 (Centro)', hex: '#7c3aed', fill: 'rgba(124, 58, 237, 0.26)' },
+        'CIRCUNSCRIPCION URBANA 3': { nombre: 'Urbana 3 (Sur)', hex: '#ea580c', fill: 'rgba(234, 88, 12, 0.26)' },
+        'CIRCUNSCRIPCIÓN URBANA 3': { nombre: 'Urbana 3 (Sur)', hex: '#ea580c', fill: 'rgba(234, 88, 12, 0.26)' },
+        'CIRCUNSCRIPCION URBANA': { nombre: 'Urbana', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'CIRCUNSCRIPCIÓN URBANA': { nombre: 'Urbana', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'CIRCUNSCRIPCION RURAL': { nombre: 'Rural', hex: '#059669', fill: 'rgba(5, 150, 105, 0.26)' },
+        'CIRCUNSCRIPCIÓN RURAL': { nombre: 'Rural', hex: '#059669', fill: 'rgba(5, 150, 105, 0.26)' },
+        'URBANA 1': { nombre: 'Urbana 1 (Norte)', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'URBANA 2': { nombre: 'Urbana 2 (Centro)', hex: '#7c3aed', fill: 'rgba(124, 58, 237, 0.26)' },
+        'URBANA 3': { nombre: 'Urbana 3 (Sur)', hex: '#ea580c', fill: 'rgba(234, 88, 12, 0.26)' },
+        'URBANA': { nombre: 'Urbana', hex: '#028090', fill: 'rgba(2, 128, 144, 0.26)' },
+        'RURAL': { nombre: 'Rural', hex: '#059669', fill: 'rgba(5, 150, 105, 0.26)' }
     };
 
     function normCircunscripcion(val) {
         return String(val || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
+    }
+
+    function obtenerVariantesCircunscripcion(circ) {
+        if (!circ || circ === 'Todas') return [];
+        const raw = String(circ || '').trim().toUpperCase();
+        const sinAcento = normCircunscripcion(raw);
+        const conAcento = sinAcento.replace(/CIRCUNSCRIPCION/g, 'CIRCUNSCRIPCIÓN');
+        const soloNombre = sinAcento.replace(/^CIRCUNSCRIPCI[OÓ]N\s+/g, '');
+        const soloNombreAcento = conAcento.replace(/^CIRCUNSCRIPCI[OÓ]N\s+/g, '');
+        return Array.from(new Set([raw, sinAcento, conAcento, soloNombre, soloNombreAcento]));
     }
 
     function resolverCircunscripcionParroquia(nombreParroquia) {
@@ -1081,24 +1101,27 @@ document.addEventListener('DOMContentLoaded', () => {
         AppState.encuestas.forEach(enc => {
             const alertas = [];
 
-            // ÚNICAMENTE VERIFICACIÓN DE CÓDIGOS DE ENCUESTADOR Y SUPERVISOR
+            // ÚNICAMENTE VERIFICACIÓN DE CÓDIGOS DE ENCUESTADOR Y SUPERVISOR (SI HAY NÓMINA OFICIAL DEFINIDA)
             const encCodStr = String(enc.encuestador || enc.C_digo_encuestador || campo(enc, AppState.config.campoEncuestador) || '').trim();
             const supCodOriginal = String(enc._supervisorOriginal || enc.supervisor || enc.C_digo_Supervisor || campo(enc, AppState.config.campoSupervisor) || '').trim();
+            const hayNominaOficial = Object.keys(EQUIPO_CAMPO).length > 0;
 
-            if (!EQUIPO_CAMPO[encCodStr]) {
-                alertas.push({
-                    tipo: 'encuestador',
-                    titulo: 'No oficial',
-                    mensaje: `Encuestador no oficial (${encCodStr})`
-                });
-            } else {
-                const supEsperado = ENCUESTADOR_A_SUPERVISOR[encCodStr];
-                if (supCodOriginal && supCodOriginal !== supEsperado) {
+            if (hayNominaOficial) {
+                if (!EQUIPO_CAMPO[encCodStr]) {
                     alertas.push({
-                        tipo: 'supervisor',
-                        titulo: 'Supervisor erróneo',
-                        mensaje: `Sup. ${supCodOriginal} en vez de ${supEsperado}`
+                        tipo: 'encuestador',
+                        titulo: 'No oficial',
+                        mensaje: `Encuestador no oficial (${encCodStr})`
                     });
+                } else {
+                    const supEsperado = ENCUESTADOR_A_SUPERVISOR[encCodStr];
+                    if (supCodOriginal && supEsperado && supCodOriginal !== supEsperado) {
+                        alertas.push({
+                            tipo: 'supervisor',
+                            titulo: 'Supervisor erróneo',
+                            mensaje: `Sup. ${supCodOriginal} en vez de ${supEsperado}`
+                        });
+                    }
                 }
             }
 
@@ -1118,8 +1141,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Umbral estricto: encuestas completadas en menos de 4 minutos
-            const umbralMin = 4.0;
-            const esAtipica = (duracionMin !== null && duracionMin > 0 && duracionMin < umbralMin);
+            const umbralMin = (window.CS_Auditoria && window.CS_Auditoria.UMBRAL_DURACION_ATIPICA_MINUTOS) || 4.0;
+            const esAtipica = window.CS_Auditoria
+                ? window.CS_Auditoria.esDuracionAtipica(duracionMin)
+                : (duracionMin !== null && duracionMin > 0 && duracionMin < umbralMin);
             enc._duracionMin = duracionMin;
             enc._umbralMin = umbralMin;
             enc._esAtipica = esAtipica;
@@ -1397,6 +1422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await res.json();
             if (!Array.isArray(data.resultados)) throw new Error('Respuesta de encuestas inválida');
+            ocultarError();
             const rawEncuestas = data.resultados;
             const provObjetivo = (AppState.config && AppState.config.provincia) ? normTexto(AppState.config.provincia) : null;
             AppState.encuestas = rawEncuestas.map(normalizarSupervisorEncuesta).filter(e => {
@@ -1945,9 +1971,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (AppState.sectoresGeojson && AppState.sectoresGeojson.features) {
                 AppState.sectoresGeojson.features.forEach(f => {
                     const p = f.properties || {};
-                    const scNum = String(p.sc || p.codigo_muestra || p.num_muestra || '').trim();
-                    const tipologia = String(p.tipologia || '').trim().toUpperCase();
-                    const etiqueta = p.etiquetaSC || p.etiqueta || (scNum && tipologia ? `${scNum}|${tipologia}` : scNum);
+                    const scNum = String(p.num_muestra || p.NUM_MUESTRA || p.sc || p.codigo_muestra || '').trim();
+                    const tipologia = String(p.tipologia || p.TIPOLOGIA || '').trim().toUpperCase();
+                    const etiqueta = p.etiqueta || p.ETIQUETA || p.etiquetaSC || (scNum && tipologia ? `${scNum} | ${tipologia}` : scNum);
                     const parroquia = String(p.parroquia || p.PARROQUIA || '').trim();
                     const canton = String(p.canton || p.CANTON || '').trim();
                     const scKey = p.sc_key || `${canton}_${scNum}`;
@@ -2251,6 +2277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Así, una boleta previa de Quito nunca puede volver a centrar el mapa
         // cuando se selecciona Cayambe, Mejía o Rumiñahui.
         const hayFiltroTerritorial = AppState.cantonSeleccionado !== 'Todos'
+            || (AppState.circunscripcionSeleccionada && AppState.circunscripcionSeleccionada !== 'Todas')
             || AppState.parroquiaSeleccionada !== 'Todas'
             || AppState.sectorSeleccionado !== 'Todos';
         actualizarMapa(encuestas, ajustarCamara && !hayFiltroTerritorial);
@@ -2293,6 +2320,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 subPendientes: `Para meta en ${AppState.parroquiaSeleccionada}`,
                 tituloAvance: `Avance Parroquia`,
                 subAvance: `${numSectores || 1} sectores (${metaParr} encuestas)`
+            };
+        }
+
+        // 2.5 Filtro por Circunscripción
+        if (AppState.circunscripcionSeleccionada && AppState.circunscripcionSeleccionada !== 'Todas') {
+            const cNorm = normCircunscripcion(AppState.circunscripcionSeleccionada);
+            let numSectoresCirc = 0;
+            if (AppState.sectoresGeojson && Array.isArray(AppState.sectoresGeojson.features)) {
+                numSectoresCirc = AppState.sectoresGeojson.features.filter(f => {
+                    const props = f.properties || {};
+                    const c = normCircunscripcion(props.circunscripcion || props.CIRCUNSCRIPCION || resolverCircunscripcionParroquia(props.parroquia));
+                    return c === cNorm;
+                }).length;
+            }
+            const metaCirc = Math.max(10, (numSectoresCirc || 1) * 10);
+            const cInfo = PALETA_CIRCUNSCRIPCIONES[cNorm] || {};
+            const nomCirc = cInfo.nombre || AppState.circunscripcionSeleccionada;
+            return {
+                meta: metaCirc,
+                etiquetaMeta: `Meta: ${metaCirc.toLocaleString()} (${nomCirc})`,
+                subPendientes: `Para meta en ${nomCirc}`,
+                tituloAvance: `Avance ${nomCirc}`,
+                subAvance: `${numSectoresCirc || 1} sectores (${metaCirc} encuestas)`
             };
         }
 
@@ -2392,7 +2442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let sectoresData = { type: 'FeatureCollection', features: [] };
 
         try {
-            const versionQuery = '?v=' + ((AppState.config && AppState.config.version) || '111.0.0');
+            const versionQuery = '?v=' + ((AppState.config && AppState.config.version) || '110.0.0');
             const [resPar, resSec] = await Promise.all([
                 fetch('assets/parroquias.geojson' + versionQuery),
                 fetch('assets/sectores_censales.geojson' + versionQuery)
@@ -2417,19 +2467,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sectoresData.features) {
             sectoresData.features.forEach(f => {
                 const p = f.properties || {};
-                const cod = String(p.sc || p.codigo_muestra || p.num_muestra || '').trim();
-                const tip = String(p.tipologia || '').trim().toUpperCase();
+                const cod = String(p.num_muestra || p.NUM_MUESTRA || p.sc || p.codigo_muestra || '').trim();
+                const tip = String(p.tipologia || p.TIPOLOGIA || '').trim().toUpperCase();
                 const can = String(p.canton || p.CANTON || '').trim();
                 let par = String(p.parroquia || p.PARROQUIA || '').trim().toUpperCase();
-                if (par.includes('YUNGANZA')) par = 'YUNGANZA /EL ROSARIO';
-                const secAnm = String(p.sec_anm || '').trim();
-                const etiq = p.etiqueta || p.etiquetaSC || (cod && tip ? `${cod}|${tip}` : (cod || tip));
+                const secAnm = String(p.sec_anm || p.COD_SECTOR || p.cod_sector || '').trim();
+                const etiq = p.etiqueta || p.ETIQUETA || p.etiquetaSC || (cod && tip ? `${cod} | ${tip}` : (cod || tip));
                 p.sc = cod;
+                p.num_muestra = cod;
+                p.NUM_MUESTRA = cod;
                 p.tipologia = tip;
+                p.TIPOLOGIA = tip;
                 p.canton = can;
+                p.CANTON = can;
                 p.parroquia = par;
+                p.PARROQUIA = par;
                 p.sc_key = p.sc_key || (can && cod ? `${can}_${cod}` : '');
                 p.etiqueta = etiq;
+                p.ETIQUETA = etiq;
                 p.etiquetaSC = etiq;
                 const circVal = normCircunscripcion(p.circunscripcion || p.CIRCUNSCRIPCION || '');
                 p.circunscripcion = circVal;
@@ -2497,9 +2552,9 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'FeatureCollection',
             features: (sectoresData.features || []).map(f => {
                 const p = f.properties || {};
-                const scNum = String(p.sc || p.codigo_muestra || p.num_muestra || '').trim();
-                const tip = String(p.tipologia || '').trim().toUpperCase();
-                const etiq = p.etiqueta || p.etiquetaSC || (scNum && tip ? `${scNum}|${tip}` : (scNum || tip));
+                const scNum = String(p.num_muestra || p.NUM_MUESTRA || p.sc || p.codigo_muestra || '').trim();
+                const tip = String(p.tipologia || p.TIPOLOGIA || '').trim().toUpperCase();
+                const etiq = p.etiqueta || p.ETIQUETA || p.etiquetaSC || (scNum && tip ? `${scNum} | ${tip}` : (scNum || tip));
                 let coords = (f.geometry && f.geometry.type === 'Point') ? f.geometry.coordinates : p.centroid;
                 if (!coords || !Array.isArray(coords)) {
                     if (p.bbox && Array.isArray(p.bbox)) {
@@ -2512,13 +2567,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         const b = calcularBBOX(f.geometry);
                         coords = [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2];
                     } else {
-                        coords = [-78.2625, 0.2285];
+                        coords = [-77.95, 0.60];
                     }
                 }
+                const circ = p.circunscripcion || p.CIRCUNSCRIPCION || '';
                 return {
                     type: 'Feature',
                     geometry: { type: 'Point', coordinates: coords },
-                    properties: { ...p, etiquetaSC: etiq, etiqueta: etiq, sc: scNum, tipologia: tip }
+                    properties: { ...p, etiquetaSC: etiq, etiqueta: etiq, ETIQUETA: etiq, sc: scNum, num_muestra: scNum, NUM_MUESTRA: scNum, tipologia: tip, TIPOLOGIA: tip, circunscripcion: circ, CIRCUNSCRIPCION: circ }
                 };
             })
         };
@@ -2741,7 +2797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         id: 'sectores-fill',
                         type: 'fill',
                         source: 'sectores-source',
-                        filter: ['==', ['geometry-type'], 'Polygon'],
+                        filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']],
                         paint: {
                             'fill-color': EXPR_SECTORES_FILL,
                             'fill-opacity': 0.20
@@ -2751,7 +2807,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         id: 'sectores-line',
                         type: 'line',
                         source: 'sectores-source',
-                        filter: ['==', ['geometry-type'], 'Polygon'],
+                        filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']],
                         paint: {
                             'line-color': EXPR_SECTORES_LINE,
                             'line-width': [
@@ -2788,15 +2844,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         id: 'sectores-label',
                         type: 'symbol',
                         source: 'sectores-centroides-source',
-                        minzoom: 7.0,
+                        minzoom: 6.5,
                         layout: {
-                            'text-field': ['coalesce', ['get', 'etiquetaSC'], ['get', 'etiqueta'], ['get', 'ETIQUETA'], ['to-string', ['get', 'num_muestra']], ''],
+                            'text-field': ['coalesce', ['get', 'etiquetaSC'], ['get', 'etiqueta'], ['get', 'ETIQUETA'], ''],
                             'text-font': ['Open Sans Bold'],
                             'text-size': [
                                 'interpolate', ['linear'], ['zoom'],
-                                9, 10,
-                                12, 12.5,
-                                15, 14.5
+                                7, 10,
+                                10, 11.5,
+                                12, 13,
+                                15, 15
                             ],
                             'text-anchor': 'center',
                             'text-allow-overlap': true,
@@ -3185,7 +3242,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 popupEncuestaActivo.remove();
                 popupEncuestaActivo = null;
             }
-
             const p = e.features[0].properties;
             const coords = e.features[0].geometry.coordinates;
             const esAtipica = p.esAtipica === true || p.esAtipica === 'true';
@@ -3248,7 +3304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clic en Sector Censal
         const abrirPopupSector = (e) => {
             if (e.originalEvent && e.originalEvent._encuestaHandled) return;
-            if (e.point && map.getLayer('puntos-layer')) {
+            if (e.point && map && map.getLayer('puntos-layer')) {
                 const puntosDebajo = map.queryRenderedFeatures(e.point, { layers: ['puntos-layer'] });
                 if (puntosDebajo && puntosDebajo.length > 0) return;
             }
@@ -3488,6 +3544,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function obtenerBboxCircunscripcion(nombreCirc) {
         if (!nombreCirc || nombreCirc === 'Todas') return null;
         const target = normCircunscripcion(nombreCirc);
+        const variantes = obtenerVariantesCircunscripcion(nombreCirc);
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         let encontrados = 0;
 
@@ -3495,7 +3552,7 @@ document.addEventListener('DOMContentLoaded', () => {
             AppState.sectoresGeojson.features.forEach(f => {
                 const p = f.properties || {};
                 const c = normCircunscripcion(p.circunscripcion || p.CIRCUNSCRIPCION || '');
-                if (c === target) {
+                if (c === target || variantes.includes(c)) {
                     const b = p.bbox || (f.geometry ? calcularBBOX(f.geometry) : null);
                     if (b) {
                         encontrados++;
@@ -3521,7 +3578,7 @@ document.addEventListener('DOMContentLoaded', () => {
             AppState.parroquiasGeojson.features.forEach(f => {
                 const p = f.properties || {};
                 const c = normCircunscripcion(p.circunscripcion || p.CIRCUNSCRIPCION || '');
-                if (c === target) {
+                if (c === target || variantes.includes(c)) {
                     const b = p.bbox || (f.geometry ? calcularBBOX(f.geometry) : null);
                     if (b) {
                         encontrados++;
@@ -3538,7 +3595,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         if (encontrados > 0 && minX !== Infinity) {
-            return [[minX, minY], [maxX, maxY]];
+            const dx = (maxX - minX) * 0.08 || 0.005;
+            const dy = (maxY - minY) * 0.08 || 0.005;
+            return [[minX - dx, minY - dy], [maxX + dx, maxY + dy]];
         }
         return null;
     }
@@ -3699,7 +3758,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (AppState.circunscripcionSeleccionada && AppState.circunscripcionSeleccionada !== 'Todas') {
                 // PRIORIDAD: Si hay circunscripción seleccionada, filtrar estrictamente las parroquias de esa circunscripción
                 const targetCirc = normCircunscripcion(AppState.circunscripcionSeleccionada);
-                let filterCirc = ['==', ['upcase', ['coalesce', ['get', 'circunscripcion'], ['get', 'CIRCUNSCRIPCION'], '']], targetCirc];
+                const variantesCirc = obtenerVariantesCircunscripcion(AppState.circunscripcionSeleccionada);
+                let filterCirc = [
+                    'in',
+                    ['upcase', ['coalesce', ['get', 'circunscripcion'], ['get', 'CIRCUNSCRIPCION'], '']],
+                    ['literal', variantesCirc]
+                ];
                 if (AppState.cantonSeleccionado && AppState.cantonSeleccionado !== 'Todos') {
                     const targetCanton = AppState.cantonSeleccionado.toUpperCase();
                     filterCirc = ['all', ['==', ['upcase', ['coalesce', ['get', 'canton'], ['get', 'CANTON'], '']], targetCanton], filterCirc];
@@ -3805,7 +3869,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     : matchParExpr;
             } else if (AppState.circunscripcionSeleccionada && AppState.circunscripcionSeleccionada !== 'Todas') {
                 const targetCirc = normCircunscripcion(AppState.circunscripcionSeleccionada);
-                baseTerritorialFilter = ['==', ['upcase', ['coalesce', ['get', 'circunscripcion'], ['get', 'CIRCUNSCRIPCION'], '']], targetCirc];
+                const variantesCirc = obtenerVariantesCircunscripcion(AppState.circunscripcionSeleccionada);
+                baseTerritorialFilter = [
+                    'in',
+                    ['upcase', ['coalesce', ['get', 'circunscripcion'], ['get', 'CIRCUNSCRIPCION'], '']],
+                    ['literal', variantesCirc]
+                ];
             } else if (AppState.cantonSeleccionado && AppState.cantonSeleccionado !== 'Todos') {
                 const targetCan = AppState.cantonSeleccionado;
                 const parsPermitidas = (PARROQUIAS_POR_CANTON[targetCan] || []).map(p => p.toUpperCase().trim());
@@ -4871,7 +4940,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // PIRÁMIDE POBLACIONAL (SEXO Y GRUPOS DE EDAD) - ULTRA LIGERA
     // =========================================================================
-    const COHORTES_PIRAMIDE = [
+    const COHORTES_PIRAMIDE = (window.CS_Tipologias && window.CS_Tipologias.COHORTES_PIRAMIDE) || [
         { id: '61+', label: '61 y más', min: 61, max: 125 },
         { id: '45-60', label: '45-60', min: 45, max: 60 },
         { id: '30-44', label: '30-44', min: 30, max: 44 },
@@ -4879,7 +4948,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: '16-19', label: '16-19', min: 16, max: 19 }
     ];
 
-    const CUOTAS_TIPOLOGIA = {
+    const CUOTAS_TIPOLOGIA = (window.CS_Tipologias && window.CS_Tipologias.CUOTAS_TIPOLOGIA) || {
         'A': { '16-19': { H: 0, M: 2 }, '20-29': { H: 1, M: 1 }, '30-44': { H: 2, M: 1 }, '45-60': { H: 1, M: 1 }, '61+': { H: 1, M: 0 } },
         'B': { '16-19': { H: 0, M: 2 }, '20-29': { H: 2, M: 0 }, '30-44': { H: 3, M: 0 }, '45-60': { H: 0, M: 2 }, '61+': { H: 0, M: 1 } },
         'C': { '16-19': { H: 2, M: 0 }, '20-29': { H: 1, M: 1 }, '30-44': { H: 1, M: 2 }, '45-60': { H: 1, M: 1 }, '61+': { H: 0, M: 1 } },
@@ -4890,9 +4959,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'H': { '16-19': { H: 1, M: 0 }, '20-29': { H: 1, M: 1 }, '30-44': { H: 1, M: 2 }, '45-60': { H: 2, M: 0 }, '61+': { H: 0, M: 2 } }
     };
 
-
     function extraerSexoYEdad(e) {
         if (!e) return { sexo: null, edad: null };
+        if (window.CS_KoboParser && typeof window.CS_KoboParser.extraerSexoYEdad === 'function') {
+            return window.CS_KoboParser.extraerSexoYEdad(e);
+        }
 
         // 1. Sexo / Género: P1 es "1. ¿CUÁL ES SU GÉNERO?" (1=Masculino/Hombre, 2=Femenino/Mujer)
         let sexo = null;

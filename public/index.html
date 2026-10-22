@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <meta name="description" content="Panel de Supervisión de Campo en tiempo real — Clima Social">
-  <title>Clima Social · Encuesta Cantonal Quito Octubre 2026</title>
+  <title>Clima Social · Supervisión Territorial</title>
   <link rel="icon" type="image/png" href="assets/icono.png">
   <link rel="manifest" href="manifest.webmanifest">
 
@@ -25,19 +25,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
 
   <!-- Preload Cartografía Clave (Caché optimizada para móviles) -->
-  <link rel="preload" href="assets/parroquias.geojson?v=111.0.7" as="fetch" crossorigin>
-  <link rel="preload" href="assets/sectores_censales.geojson?v=111.0.7" as="fetch" crossorigin>
+  <link rel="preload" href="assets/parroquias.geojson?v=80.0.0" as="fetch" crossorigin>
+  <link rel="preload" href="assets/sectores_censales.geojson?v=80.0.0" as="fetch" crossorigin>
 
   <!-- MapLibre GL CSS (Aceleración WebGL Nativa en GPU) -->
   <link rel="stylesheet" href="libs/maplibre-gl.css" />
 
   <!-- Estilos del Dashboard -->
-  <link rel="stylesheet" href="style.css?v=111.0.7">
+  <link rel="stylesheet" href="style.css?v=85.0.0">
 </head>
 <body>
 
     <!-- ===== STANDBY OVERLAY (ESTADO EN ESPERA / REPOSO) ===== -->
-  <div class="cs-standby" id="standbyOverlay" style="display:flex;">
+  <div class="cs-standby" id="standbyOverlay" style="display:none;">
     <div class="cs-standby__card">
       <div class="cs-standby__logo-wrap" id="standbyLogoBtn" role="button" tabindex="0" title="Clima Social · Toca 3 veces para inspeccionar cartografía">
         <img src="assets/01_ClimaSocial_Horizontal_Transparente.png" onerror="this.onerror=null; this.src='assets/01_Logo_Clima_Social_Horizontal_Oficial.svg';" alt="Clima Social" class="cs-standby__logo">
@@ -232,19 +232,6 @@
             <div class="cs-select-wrap">
               <select id="cantonFilter" class="cs-select">
                 <option value="Todos">Todos los cantones</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Circunscripción -->
-          <div class="cs-ribbon-field" id="wrapCircunscripcionFilter">
-            <label for="circunscripcionFilter" class="cs-field-label">
-              <svg class="cs-icon cs-icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-              <span>Circunscripción</span>
-            </label>
-            <div class="cs-select-wrap">
-              <select id="circunscripcionFilter" class="cs-select">
-                <option value="Todas">Todas las circunscripciones</option>
               </select>
             </div>
           </div>
@@ -520,7 +507,10 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script src="libs/maplibre-gl.js"></script>
-  <script src="script.js?v=111.0.11"></script>
+  <script src="js/tipologias.js?v=1.0.8"></script>
+  <script src="js/kobo-parser.js?v=1.0.8"></script>
+  <script src="js/auditoria.js?v=1.0.8"></script>
+  <script src="script.js?v=1.0.8"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -536,13 +526,13 @@
         if ('caches' in window) {
           caches.keys().then(names => {
             names.forEach(name => {
-              if (name !== 'clima-social-v111-0-11') {
+              if (name !== 'clima-social-ibarra-2026-v2') {
                 caches.delete(name);
               }
             });
           });
         }
-        navigator.serviceWorker.register('/service-worker.js?v=111.0.11').then(reg => {
+        navigator.serviceWorker.register('/service-worker.js?v=73.5.0').then(reg => {
           if (!reg) return;
           if (reg.waiting) {
             reg.waiting.postMessage({ type: 'SKIP_WAITING' });
